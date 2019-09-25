@@ -15,3 +15,10 @@ def hello():
 @app.route('/api/v1/products')
 def get_products():
     return jsonify(PRODUCTS)
+
+@app.route('/api/v1/products/<product_id>')
+def get_product_by_id(product_id):
+    for product in PRODUCTS:
+        if product['id'] == int(product_id):
+            return jsonify(product)
+    return jsonify({ "error": "id not found" }), 404
