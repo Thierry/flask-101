@@ -39,6 +39,21 @@ class TestViews(TestCase):
         self.assertIsInstance(product, dict)
         self.assertEqual(product, { 'id': id, 'name': 'My New Product' })
 
+    def test_patch_product_validname(self):
+        new_product_name = { 'name': 'My New Product Name' }
+        response = self.client.patch("/api/v1/products/4", data=json.dumps(new_product_name), content_type='application/json')
+        self.assertEqual(response.status, "204 NO CONTENT")
+
+        response = self.client.get(f"/api/v1/products/4")
+        self.assertEqual(response.status, "200 OK")
+        product = response.json
+        self.assertEqual(product, { 'id': 4, 'name': 'My New Product Name' })
+
+    def test_patch_product_invalidname(self):
+        new_product_name = { "name": "" }
+        for data in [ {}, new_product_name]:
+            response = self.client.patch("/api/v1/products/4", data=json.dumps(data), content_type='application/json')
+            self.assertEqual(response.status, "422 UNPROCESSABLE ENTITY")
 
 # test_zz_* to run last
     def test_zz_delete_unknown_product(self):

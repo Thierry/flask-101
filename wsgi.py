@@ -54,3 +54,17 @@ def delete_product_by_id(product_id):
             del PRODUCTS[index]
             return "", 204
     return "",404
+
+@app.route('/api/v1/products/<product_id>', methods = ['PATCH'])
+def patch_product_by_id(product_id):
+    product_update = request.get_json()
+    if product_update is None or 'name' not in product_update.keys() or product_update['name'] == '':
+        return "", 422
+    for index, product in enumerate(PRODUCTS):
+        if product['id'] == int(product_id):
+ #           PRODUCTS[index]['name'] = product_update['name']
+            for key in product_update.keys():
+                if key != 'id':
+                    product[key] = product_update[key]
+            return "", 204
+    return "",404
