@@ -22,3 +22,11 @@ def get_product_by_id(product_id):
         if product['id'] == int(product_id):
             return jsonify(product)
     return jsonify({ "error": "id not found" }), 404
+
+@app.route('/api/v1/products/<product_id>', methods = ['DELETE'])
+def delete_product_by_id(product_id):
+    for index, product in enumerate(PRODUCTS):
+        if product['id'] == int(product_id):
+            del PRODUCTS[index]
+            return "", 204
+    return "",404

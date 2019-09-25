@@ -23,3 +23,14 @@ class TestViews(TestCase):
     def test_unknown_product(self):
         response = self.client.get("/api/v1/products/17")
         self.assertEqual(response.status, "404 NOT FOUND")
+
+# test_zz_* to run last
+    def test_zz_delete_unknown_product(self):
+        response = self.client.delete("/api/v1/products/17")
+        self.assertEqual(response.status, "404 NOT FOUND")
+
+    def test_zz_delete_valid_product(self):
+        response = self.client.delete("/api/v1/products/1")
+        self.assertEqual(response.status, "204 NO CONTENT")
+        response = self.client.get("/api/v1/products/1")
+        self.assertEqual(response.status, "404 NOT FOUND")
